@@ -108,3 +108,97 @@ brands ──< products >── categories
  
 1. Run `Query_Build.sql` against the `BikeStores` database.
 2. Export the result to Excel on a sheet named `Main_query_result`.
+
+
+### Open the Tableau dashboard
+ 
+1. Open `Bike_Store_Data_Charts_v2026.1.twb` in Tableau Desktop.
+2. The workbook's data source points to the original author's local copy of the Excel file. Tableau will prompt you to locate it: choose the `.xlsx` in this project (**Edit Data Source > Browse**) and select the `Main_query_result` sheet.
+## The Analytical Query
+ 
+`Query_Build.sql` produces one row per **order, product, store and staff member**. It joins seven lookup tables onto `sales.orders`:
+ 
+| Joined table | Alias | Join key |
+|--------------|-------|----------|
+| `sales.customers` | `cus` | `customer_id` |
+| `sales.order_items` | `items` | `order_id` |
+| `production.products` | `products` | `items.product_id` |
+| `production.categories` | `category` | `products.category_id` |
+| `sales.stores` | `store` | `orders.store_id` |
+| `sales.staffs` | `staff` | `orders.staff_id` |
+| `production.brands` | `brands` | `products.brand_id` |
+ 
+Two measures are calculated:
+ 
+- **`Total_units`** = `SUM(quantity)`
+- **`Revenue`** = `SUM(quantity * list_price)`
+
+## Transformed Dataset
+ 
+The `Main_query_result` sheet of the Excel file holds the query output: **4,156 rows** covering **1,427 orders**.
+ 
+| Column | Description |
+|--------|-------------|
+| `order_id` | Order identifier |
+| `Customer_Name` | Customer first and last name |
+| `city`, `state` | Customer location |
+| `order_date` | Date the order was placed |
+| `Total_units` | Units sold on the line |
+| `Revenue` | Line revenue (`quantity * list_price`) |
+| `product_name` | Product sold |
+| `category_name` | Product category |
+| `store_name` | Store that took the order |
+| `Staff_name` | Salesperson on the order |
+| `brand_name` | Product brand |
+
+
+## Excel Workbook
+ 
+The workbook has three sheets:
+ 
+- **`Main_query_result`**: the flat dataset described above.
+- **`Pivot Table`**: pivot tables of revenue by year and month, state, store, brand, category, top customers and salesperson.
+- **`Dashboard`**: an *Executive Dashboard* with seven Excel charts built from the pivots (line, column, pie and bar charts).
+## Tableau Dashboard
+ 
+The Tableau workbook connects to `Main_query_result` and contains one dashboard, **Executive Dashboard**, built from these worksheets:
+ 
+| Worksheet | Shows |
+|-----------|-------|
+| Title / Banner | Dashboard header elements |
+| Revenue per year | Yearly revenue trend |
+| Revenue per month | Monthly revenue trend |
+| Revenue / store | Revenue by store |
+| Total Revenue / State | Revenue by state (map) |
+| Revenue /Brand_Name | Revenue by brand |
+| Revenue/Category | Revenue by product category |
+| Revenue_Per_Sales | Revenue by salesperson (adjustable **Top N Salesman** parameter) |
+| Revenue_Top_Customers | Top customers by revenue (adjustable **Top N Customers** parameter) |
+| Year | Year filter |
+
+
+## Key Figures
+ 
+Calculated from `Main_query_result`:
+ 
+| Metric | Value |
+|--------|------:|
+| Total revenue | $7,295,598 |
+| Total units sold | 6,233 |
+| Orders | 1,427 |
+| Revenue 2016 | $2,709,484 |
+| Revenue 2017 | $3,845,515 |
+| Revenue 2018 (to 7 March) | $740,599 |
+ 
+Revenue by store: Baldwin Bikes $5.06M, Santa Cruz Bikes $1.40M, Rowlett Bikes $0.83M.
+Top brand: Trek ($4.27M). Top category: Mountain Bikes ($2.77M).
+
+
+## Tools Used
+ 
+- Microsoft SQL Server (T-SQL)
+- Microsoft Excel (pivot tables and charts)
+- Tableau Desktop
+## Credits
+ 
+The BikeStores sample database is © 2017 [sqlservertutorial.net](http://www.sqlservertutorial.net/load-sample-database/). All rights reserved by the original author; it is used here for learning and portfolio purposes.
