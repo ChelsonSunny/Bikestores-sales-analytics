@@ -196,7 +196,8 @@ Top brand: Trek ($4.27M). Top category: Mountain Bikes ($2.77M).
 
 ## Tools Used
  
-- Microsoft SQL Server (T-SQL)
+- Microsoft SQL Server
+- MySQL
 - Microsoft Excel (pivot tables and charts)
 - Tableau Desktop
 ## Credits
